@@ -1,0 +1,101 @@
+wait(3)
+local players = game:GetService("Players")
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "AngelLight Hub V1";
+    Text = "Welcome To The Private Dupe, " .. players.LocalPlayer.DisplayName;
+    Icon = "rbxthumb://type=AvatarHeadShot&id=" .. players.LocalPlayer.UserId .. "&w=180&h=180 true";
+    Duration = 3
+})
+wait(3)
+local players = game:GetService("Players")
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Adopt Me Hub V1";
+    Text = "Your AngelLight Hub Will Load Shortly!";
+    Icon = "rbxthumb://type=AvatarHeadShot&id=" .. players.LocalPlayer.UserId .. "&w=180&h=180 true";
+    Duration = 3
+})
+wait(3)
+--Its coded kinda shitty with things it dont needs to do but it works so im happy with it
+warn("[DEBUG] LOADING Adopt Me Hub V1")
+local hashTable = {}
+for i, v in pairs(getgc()) do
+    if type(v) == "function" and debug.getinfo(v).name == "get_remote_from_cache" then
+        wait(0.5)
+        local info = debug.getinfo(v)
+        local upvalues = debug.getupvalues(v)
+        local functionName = info.name
+        local hash = ""
+        if next(upvalues) ~= nil and type(upvalues[1]) == "table" then
+            local remoteTable = upvalues[1]
+            hashTable[functionName] = {}
+            for key, value in pairs(remoteTable) do
+                hashTable[functionName][key] = value
+            end
+        end
+    end
+end
+local remotes = {}
+local hashes = {}
+for functionName, tableContents in pairs(hashTable) do
+    for key, value in pairs(tableContents) do
+        remotes[value] = key
+        hashes[key] = value
+    end
+end
+local apiFolder = game:GetService("ReplicatedStorage").API
+for _, remoteTable in pairs(apiFolder:GetDescendants()) do
+    if remoteTable:IsA("RemoteEvent") or remoteTable:IsA("RemoteFunction") then
+        local originalName = remotes[remoteTable]
+        if originalName then
+            remoteTable.Name = originalName
+        end
+    end
+end
+for _, remoteTable in pairs(apiFolder:GetDescendants()) do
+    if remoteTable:IsA("RemoteEvent") or remoteTable:IsA("RemoteFunction") then
+    end
+end
+warn("Loaded")
+-- Configuration
+local petId = ""
+
+-- Create GUI
+local GUI = Instance.new("ScreenGui")
+GUI.Name = "PetDuplicator"
+GUI.Parent = game.CoreGui
+
+-- Create Frame
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 200, 0, 150)
+Frame.Position = UDim2.new(0, 100, 0, 100)
+Frame.Draggable = true
+Frame.BackgroundTransparency = 0.5
+Frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+Frame.BorderColor3 = Color3.new(0.1, 0.1, 0.1)
+Frame.Parent = GUI
+
+-- Add rounded corners to Frame
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = Frame
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0, 20)
+Title.Position = UDim2.new(0, 0, 0, 0)
+Title.Font = Enum.Font.SourceSans
+Title.FontSize = Enum.FontSize.Size18
+Title.Text = "Adopt Me Hub V1"
+Title.BackgroundTransparency = 1
+Title.TextColor3 = Color3.new(1, 1, 1)
+Title.Parent = Frame
+
+-- Create Close Button
+local XButton = Instance.new("TextButton")
+XButton.Size = UDim2.new(0, 20, 0, 20)
+XButton.Position = UDim2.new(0, 180, 0, 0)
+XButton.Font = Enum.Font.SourceSans
+XButton.FontSize = Enum.FontSize.Size14
+XButton.Text = "X"
+XButton.TextColor3 = Color3.new(1, 1, 1)
+XButton.BackgroundTransparency = 0.5 -- Make the button transparent
+... (104 lines left)
